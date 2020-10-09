@@ -17,7 +17,9 @@ export default function Post({ postData }) {
           <Date dateString={postData.date} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-        {postData.series && <Plotter series={postData.series} />}
+        {(postData.series || []).length > 0 && (
+          <Plotter series={postData.series} />
+        )}
       </article>
     </Layout>
   );
