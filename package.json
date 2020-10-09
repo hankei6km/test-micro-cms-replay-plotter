@@ -4,7 +4,9 @@
   "private": false,
   "scripts": {
     "dev": "next dev",
+    "license": "sh scripts/license.sh",
     "build": "next build",
+    "build:vercel": "sh scripts/license.sh && next build",
     "start": "next start"
   },
   "dependencies": {
