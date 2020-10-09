@@ -2,6 +2,7 @@ import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import Head from 'next/head';
 import Date from '../../components/date';
+import Plotter from '../../components/plotter';
 import utilStyles from '../../styles/utils.module.css';
 
 export default function Post({ postData }) {
@@ -16,6 +17,9 @@ export default function Post({ postData }) {
           <Date dateString={postData.date} />
         </div>
         <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+        {(postData.series || []).length > 0 && (
+          <Plotter series={postData.series} />
+        )}
       </article>
     </Layout>
   );
