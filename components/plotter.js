@@ -14,6 +14,10 @@ export default function Plotter({ series }) {
           options={{
             chart: {
               type: 'line'
+            },
+            legend: {
+              show: true,
+              showForSingleSeries: true
             }
           }}
           series={series}
