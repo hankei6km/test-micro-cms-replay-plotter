@@ -24,7 +24,9 @@ export default function Post({ postData, preview }) {
       <article>
         <h1 className={utilStyles.headingXl}>
           {preview && (
-            <span className={utilStyles.draftText}>{'[DRAFT] '}</span>
+            <a href="/api/blog_exit_preview" className={utilStyles.draftText}>
+              {'[DRAFT(click to exit)] '}
+            </a>
           )}
           {postData.title}
         </h1>
