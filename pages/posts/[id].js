@@ -51,7 +51,7 @@ export async function getStaticProps(context) {
   return {
     props: {
       postData,
-      preview: context.preview
+      preview: context.preview ? context.preview : null
     }
   };
 }
