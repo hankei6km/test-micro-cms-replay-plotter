@@ -23,7 +23,7 @@ GitHubBox からは https://githubbox.com/hankei6km/test-micro-cms-replay-plotte
 
 ## サンプル
 
-**ここにデプロイ先のアドレス** から実際に動作するサイトが確認できます。
+https://test-micro-cms-replay-plotter.vercel.app/ から実際に動作するサイトが確認できます。
 
 ## ライセンス
 
