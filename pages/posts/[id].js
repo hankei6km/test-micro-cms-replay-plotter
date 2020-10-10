@@ -1,11 +1,20 @@
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import ErrorPage from 'next/error';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
-import Head from 'next/head';
 import Date from '../../components/date';
 import Plotter from '../../components/plotter';
 import utilStyles from '../../styles/utils.module.css';
 
 export default function Post({ postData }) {
+  // https://github.com/vercel/next.js/blob/b41f9baaa413d5dac29faf107663214c0923c8bd/examples/cms-contentful/pages/posts/%5Bslug%5D.js
+  const router = useRouter();
+
+  if (!router.isFallback && !postData) {
+    return <ErrorPage statusCode={404} />;
+  }
+
   return (
     <Layout>
       <Head>
