@@ -23,7 +23,9 @@ export default function Post({ postData, preview }) {
       </Head>
       <article>
         <h1 className={utilStyles.headingXl}>
-          {preview && '[DRAFT]'}
+          {preview && (
+            <span className={utilStyles.draftText}>{'[DRAFT] '}</span>
+          )}
           {postData.title}
         </h1>
         <div className={utilStyles.lightText}>
