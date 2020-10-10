@@ -1,18 +1,37 @@
+// import { useRouter } from 'next/router';
+import Head from 'next/head';
+import ErrorPage from 'next/error';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
-import Head from 'next/head';
 import Date from '../../components/date';
 import Plotter from '../../components/plotter';
 import utilStyles from '../../styles/utils.module.css';
 
-export default function Post({ postData }) {
+export default function Post({ postData, preview }) {
+  // https://github.com/vercel/next.js/blob/b41f9baaa413d5dac29faf107663214c0923c8bd/examples/cms-contentful/pages/posts/%5Bslug%5D.js
+  // const router = useRouter();
+
+  // if (!router.isFallback && !postData) {
+  if (!postData) {
+    // cookie がないときに `An unexpected error has occurred.' となる
+    // これが原因かはわからないが
+    return <ErrorPage statusCode={404} />;
+  }
+
   return (
     <Layout>
       <Head>
         <title>{postData.title}</title>
       </Head>
       <article>
-        <h1 className={utilStyles.headingXl}>{postData.title}</h1>
+        <h1 className={utilStyles.headingXl}>
+          {preview && (
+            <a href="/api/blog_exit_preview" className={utilStyles.draftText}>
+              {'[DRAFT(click to exit)] '}
+            </a>
+          )}
+          {postData.title}
+        </h1>
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
         </div>
@@ -29,15 +48,16 @@ export async function getStaticPaths() {
   const paths = await getAllPostIds();
   return {
     paths,
-    fallback: false
+    fallback: true
   };
 }
 
-export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id);
+export async function getStaticProps(context) {
+  const postData = await getPostData(context);
   return {
     props: {
-      postData
+      postData,
+      preview: context.preview ? context.preview : null
     }
   };
 }
