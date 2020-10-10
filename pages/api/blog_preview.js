@@ -3,7 +3,11 @@ import fetch from 'node-fetch';
 // https://microcms.io/blog/nextjs-preview-mode
 
 export default async (req, res) => {
-  if (!req.query.slug) {
+  if (
+    !process.env.BLOG_PREVIEW_SECRET ||
+    process.env.BLOG_PREVIEW_SECRET !== req.query.previewSecret ||
+    !req.query.slug
+  ) {
     return res.status(404).end();
   }
   try {
