@@ -7,5 +7,6 @@ module.exports = {
     //
     // BLOG_API_URL_BASE: 'url'
     // BLOG_API_KEY: 'secret-key'
+    // BLOG_PREVIEW_SECRET: 'secret-key'
   }
 };

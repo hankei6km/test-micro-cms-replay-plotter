@@ -6,14 +6,24 @@
 
 いずれ書くかもしれません。
 
+とりあえずプレビュー機能の設定。
+
+1. デプロイ側に環境変数 `BLOG_PREVIEW_SECRET` を設定。 内容はとくに決まっていませんが、`uuidgen` などで作成するとよいかと。
+1. microCMS 側で「API 設定/画面プレビュー設定」に以下のように設定。
+
+```
+https://<deployed-domain>/api/blog_preview?slug={CONTENT_ID}&draftKey={DRAFT_KEY}&previewSecret=********-****-****-****-************
+```
+
 ## 環境設定
 
 開発環境およびデプロイ先の環境に、以下の環境変数が必要です。
 
-| 変数名            | 内容       | 例                                            |
-| ----------------- | ---------- | --------------------------------------------- |
-| BLOG_API_URL_BASE | API の URL | `https://<service>.microcms.io/api/v1/<name>` |
-| BLOG_API_KEY      | API KEY    | `********-****-****-****-************`        |
+| 変数名              | 内容        | 例                                            |
+| ------------------- | ----------- | --------------------------------------------- |
+| BLOG_API_URL_BASE   | API の URL  | `https://<service>.microcms.io/api/v1/<name>` |
+| BLOG_API_KEY        | API KEY     | `********-****-****-****-************`        |
+| BLOG_PREVIEW_SECRET | PREVIEW KEY | `********-****-****-****-************`        |
 
 ## CodeSadnbox
 
