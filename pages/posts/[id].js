@@ -13,6 +13,8 @@ export default function Post({ postData, preview }) {
 
   // if (!router.isFallback && !postData) {
   if (!postData) {
+    // cookie がないときに `An unexpected error has occurred.' となる
+    // これが原因かはわからないが
     return <ErrorPage statusCode={404} />;
   }
 
