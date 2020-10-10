@@ -7,7 +7,7 @@ import Date from '../../components/date';
 import Plotter from '../../components/plotter';
 import utilStyles from '../../styles/utils.module.css';
 
-export default function Post({ postData }) {
+export default function Post({ postData, preview }) {
   // https://github.com/vercel/next.js/blob/b41f9baaa413d5dac29faf107663214c0923c8bd/examples/cms-contentful/pages/posts/%5Bslug%5D.js
   // const router = useRouter();
 
@@ -22,7 +22,10 @@ export default function Post({ postData }) {
         <title>{postData.title}</title>
       </Head>
       <article>
-        <h1 className={utilStyles.headingXl}>{postData.title}</h1>
+        <h1 className={utilStyles.headingXl}>
+          {preview && '[DRAFT]'}
+          {postData.title}
+        </h1>
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
         </div>
@@ -47,7 +50,8 @@ export async function getStaticProps(context) {
   const postData = await getPostData(context);
   return {
     props: {
-      postData
+      postData,
+      preview: context.preview
     }
   };
 }
