@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
+
+export type Series = {
+  name: string;
+  data: number[];
+}[];
 
 // ApexCharts は next/dynamic でも useEffect まで待つ必要あるから、
 // 記述的にはあまり変わらない.
 // どちらを使う方が良いのか?
-export default function Plotter({ series }) {
-  const [plotter, setPlotter] = useState();
+export default function Plotter({ series }: { series: Series }) {
+  //const [plotter, setPlotter] = useState<null | Element>(null);
+  const [plotter, setPlotter] = useState<null | ReactElement<any>>(null);
   // https://stackoverflow.com/questions/55151041/window-is-not-defined-in-next-js-react-app
   useEffect(() => {
     const importChart = async () => {

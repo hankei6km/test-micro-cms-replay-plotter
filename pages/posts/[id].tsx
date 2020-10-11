@@ -4,10 +4,23 @@ import ErrorPage from 'next/error';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import Date from '../../components/date';
-import Plotter from '../../components/plotter';
+import Plotter, { Series } from '../../components/plotter';
 import utilStyles from '../../styles/utils.module.css';
 
-export default function Post({ postData, preview }) {
+import { GetStaticProps, GetStaticPaths } from 'next';
+
+export default function Post({
+  postData,
+  preview
+}: {
+  postData: {
+    title: string;
+    date: string;
+    contentHtml: string;
+    series: Series;
+  };
+  preview: boolean;
+}) {
   // https://github.com/vercel/next.js/blob/b41f9baaa413d5dac29faf107663214c0923c8bd/examples/cms-contentful/pages/posts/%5Bslug%5D.js
   // const router = useRouter();
 
@@ -44,15 +57,15 @@ export default function Post({ postData, preview }) {
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await getAllPostIds();
   return {
     paths,
     fallback: true
   };
-}
+};
 
-export async function getStaticProps(context) {
+export const getStaticProps: GetStaticProps = async (context) => {
   const postData = await getPostData(context);
   return {
     props: {
@@ -60,4 +73,4 @@ export async function getStaticProps(context) {
       preview: context.preview ? context.preview : null
     }
   };
-}
+};

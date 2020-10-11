@@ -1,8 +1,9 @@
 import fetch from 'node-fetch';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // https://microcms.io/blog/nextjs-preview-mode
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (
     !process.env.BLOG_PREVIEW_SECRET ||
     process.env.BLOG_PREVIEW_SECRET !== req.query.previewSecret ||
@@ -13,7 +14,7 @@ export default async (req, res) => {
   try {
     const q = new URLSearchParams('');
     q.append('fields', 'id');
-    q.append('draftKey', req.query.draftKey);
+    q.append('draftKey', req.query.draftKey as string);
     const fres = await fetch(
       `${process.env.BLOG_API_URL_BASE}/${req.query.slug}?${q.toString()}`,
       {
@@ -33,6 +34,6 @@ export default async (req, res) => {
       return res.status(401).json({ message: 'Invalid slug' });
     }
   } catch (err) {
-    return res.status(401).json({ message: res.statusText });
+    return res.status(401).json({ message: err.name });
   }
 };

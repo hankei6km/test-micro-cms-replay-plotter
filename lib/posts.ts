@@ -1,4 +1,6 @@
 import fetch from 'node-fetch';
+import { ParsedUrlQuery } from 'querystring';
+import { GetStaticPropsContext } from 'next';
 
 // getStaticProps 等のビルド時に実行される関数以外からは呼ばないように注意
 // (getStaticProps は デプロイされるときに bundle されないはずだが、明記されたところは見たいことないような。。。)
@@ -59,7 +61,7 @@ export async function getPostData({
   params,
   preview = false,
   previewData = {}
-}) {
+}: GetStaticPropsContext<ParsedUrlQuery>) {
   try {
     let url = `${process.env.BLOG_API_URL_BASE}/${params.id}`;
     if (preview) {
