@@ -1,8 +1,9 @@
 import fetch from 'node-fetch';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // https://microcms.io/blog/nextjs-preview-mode
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (
     !process.env.BLOG_PREVIEW_SECRET ||
     process.env.BLOG_PREVIEW_SECRET !== req.query.previewSecret ||

@@ -1,4 +1,6 @@
-export default (req, res) => {
+import { NextApiRequest, NextApiResponse } from 'next';
+
+export default (_: NextApiRequest, res: NextApiResponse) => {
   // https://microcms.io/blog/nextjs-preview-mode
   res.clearPreviewData();
 
