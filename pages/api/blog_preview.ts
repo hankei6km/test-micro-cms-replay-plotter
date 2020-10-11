@@ -34,6 +34,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(401).json({ message: 'Invalid slug' });
     }
   } catch (err) {
-    return res.status(401).json({ message: res.statusText });
+    return res.status(401).json({ message: err.name });
   }
 };
