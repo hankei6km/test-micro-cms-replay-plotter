@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const q = new URLSearchParams('');
     q.append('fields', 'id');
-    q.append('draftKey', req.query.draftKey);
+    q.append('draftKey', req.query.draftKey as string);
     const fres = await fetch(
       `${process.env.BLOG_API_URL_BASE}/${req.query.slug}?${q.toString()}`,
       {
