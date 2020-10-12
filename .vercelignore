@@ -8,6 +8,7 @@
 !public
 /public/opensource_licenses.txt
 !scripts
+!src
 !styles
 !.env
 !.env.production
