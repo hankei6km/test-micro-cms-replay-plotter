@@ -68,10 +68,10 @@ export default function Post({
             alt="Card Preview"
           />
         )}
-        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         {(postData.series || []).length > 0 && (
           <Plotter series={postData.series} />
         )}
+        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
       </article>
     </Layout>
   );

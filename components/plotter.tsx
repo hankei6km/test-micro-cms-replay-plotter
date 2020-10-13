@@ -24,6 +24,9 @@ export default function Plotter({ series }: { series: Series }) {
             legend: {
               show: true,
               showForSingleSeries: true
+            },
+            xaxis: {
+              tickAmount: 10
             }
           }}
           series={series}
