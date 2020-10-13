@@ -1,9 +1,10 @@
 // import { useRouter } from 'next/router';
-import Head from 'next/head';
+// import Head from 'next/head';
 import ErrorPage from 'next/error';
 import Layout from '../../components/layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 import Date from '../../components/date';
+import PostHead, { ImageUrl } from '../../components/posthead';
 import Plotter, { Series } from '../../components/plotter';
 import utilStyles from '../../styles/utils.module.css';
 
@@ -14,9 +15,15 @@ export default function Post({
   preview
 }: {
   postData: {
+    // TODO: microCMS の API スキーム用の型定義をまとめる
     title: string;
     date: string;
     contentHtml: string;
+    mainVisual: {
+      url: string;
+    };
+    mainVisualShow: boolean;
+    mainVisualText: string;
     series: Series;
   };
   preview: boolean;
@@ -32,10 +39,16 @@ export default function Post({
   }
 
   return (
-    <Layout>
-      <Head>
-        <title>{postData.title}</title>
-      </Head>
+    <Layout
+      head={
+        <PostHead
+          title={postData.title}
+          description={'post_desc'}
+          image={postData.mainVisual ? postData.mainVisual.url : undefined}
+          imageText={postData.mainVisualText}
+        />
+      }
+    >
       <article>
         <h1 className={utilStyles.headingXl}>
           {preview && (
@@ -48,6 +61,13 @@ export default function Post({
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
         </div>
+        {postData.mainVisualShow && postData.mainVisual && (
+          // ImageUrl をここでも実行するのはちょっと面白くないかも
+          <img
+            src={ImageUrl(postData.mainVisual.url, postData.mainVisualText)}
+            alt="Card Preview"
+          />
+        )}
         <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         {(postData.series || []).length > 0 && (
           <Plotter series={postData.series} />

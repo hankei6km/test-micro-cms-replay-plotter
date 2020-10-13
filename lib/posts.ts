@@ -87,6 +87,9 @@ export async function getPostData({
         title: data.title,
         date:
           data.publishedAt !== undefined ? data.publishedAt : data.createdAt,
+        mainVisual: data.mainVisual || '',
+        mainVisualShow: data.mainVisualShow,
+        mainVisualText: data.mainVisualText || '',
         series: data.series.map((e) => {
           return {
             name: e.name,
