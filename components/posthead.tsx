@@ -54,9 +54,8 @@ type Props = {
 
 export default function PostHead({
   title = config.title,
-  description = config.description,
-  // image = config.logo
-  image, //デフォルト以外では  microCMS の画像 API を経由させるので、ここで置き換えない.
+  description,
+  image,
   imageText = ''
 }: Props) {
   const imageUrl = image
@@ -66,7 +65,10 @@ export default function PostHead({
     <Head>
       <link rel="icon" href="/favicon.ico" />
       <title>{title}</title>
-      <meta name="description" content={description} />
+      <meta
+        name="description"
+        content={description ? description : config.description}
+      />
       <meta property="og:image" content={imageUrl} />
       <meta name="og:title" content={title} />
       <meta name="twitter:card" content="summary_large_image" />
