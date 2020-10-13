@@ -64,9 +64,14 @@ export default function Post({
         </div>
         {postData.mainVisualShow && postData.mainVisual && (
           // ImageUrl をここでも実行するのはちょっと面白くないかも
+          // 画像領域を確保.
+          // https://parashuto.com/rriver/development/img-size-attributes-are-back
           <img
             src={ImageUrl(postData.mainVisual.url, postData.mainVisualText)}
+            className={utilStyles.cardPreview}
             alt="Card Preview"
+            width="1280"
+            height="640"
           />
         )}
         {(postData.series || []).length > 0 && (
