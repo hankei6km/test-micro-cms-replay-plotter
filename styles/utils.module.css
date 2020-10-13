@@ -54,3 +54,9 @@
 .draftText {
   color: #a33;
 }
+
+.cardPreview {
+  width: 100%;
+  height: auto;
+  background-color: #ddd;
+}
