@@ -19,6 +19,7 @@ export default function Post({
     title: string;
     date: string;
     contentHtml: string;
+    description: string;
     mainVisual: {
       url: string;
     };
@@ -43,7 +44,7 @@ export default function Post({
       head={
         <PostHead
           title={postData.title}
-          description={'post_desc'}
+          description={postData.description}
           image={postData.mainVisual ? postData.mainVisual.url : undefined}
           imageText={postData.mainVisualText}
         />
