@@ -22,6 +22,8 @@ export default function Post({
     mainVisual: {
       url: string;
     };
+    mainVisualShow: boolean;
+    mainVisualText: string;
     series: Series;
   };
   preview: boolean;
@@ -43,6 +45,7 @@ export default function Post({
           title={postData.title}
           description={'post_desc'}
           image={postData.mainVisual ? postData.mainVisual.url : undefined}
+          imageText={postData.mainVisualText}
         />
       }
     >
@@ -58,14 +61,14 @@ export default function Post({
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
         </div>
-        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
-        {preview && postData.mainVisual && (
+        {postData.mainVisualShow && postData.mainVisual && (
           // ImageUrl をここでも実行するのはちょっと面白くないかも
           <img
-            src={ImageUrl(postData.mainVisual.url, postData.title)}
+            src={ImageUrl(postData.mainVisual.url, postData.mainVisualText)}
             alt="Card Preview"
           />
         )}
+        <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
         {(postData.series || []).length > 0 && (
           <Plotter series={postData.series} />
         )}
