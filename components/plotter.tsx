@@ -12,17 +12,20 @@ export type Series = {
 export default function Plotter({ series }: { series: Series }) {
   //const [plotter, setPlotter] = useState<null | Element>(null);
   const [plotter, setPlotter] = useState<null | ReactElement<any>>(null);
+  const [plotterHeight, setPlotterHeight] = useState(''); // 文字列で扱う
 
   const ref = useCallback(
     (node) => {
-      if (node != null && plotter === null) {
+      if (node != null) {
         // https://apexcharts.com/docs/options/chart/height/
-        // 微妙にずれる、計算方法間違えてしまったか?
-        // TODO: plotter の高さに auto を使わないことも検討.
-        const h = node.getBoundingClientRect().width * 0.62109;
-        setPlotter(
-          <div style={{ height: h }} className={utilStyles.plotterRect} />
-        );
+        // 微妙にずれる、'auto' は使わわずに近似値で明示する
+        const h = node.getBoundingClientRect().width * 0.62;
+        setPlotterHeight(`${h}`);
+        if (plotter === null) {
+          setPlotter(
+            <div style={{ height: h }} className={utilStyles.plotterRect} />
+          );
+        }
       }
     },
     [plotter]
@@ -31,27 +34,31 @@ export default function Plotter({ series }: { series: Series }) {
   // https:stackoverflow.com/questions/55151041/window-is-not-defined-in-next-js-react-app
   useEffect(() => {
     const importChart = async () => {
-      const Chart = (await import('react-apexcharts')).default;
-      setPlotter(
-        <Chart
-          options={{
-            chart: {
-              type: 'line'
-            },
-            legend: {
-              show: true,
-              showForSingleSeries: true
-            },
-            xaxis: {
-              tickAmount: 10
-            }
-          }}
-          series={series}
-        />
-      );
+      if (plotterHeight) {
+        const Chart = (await import('react-apexcharts')).default;
+        setPlotter(
+          <Chart
+            options={{
+              chart: {
+                type: 'line',
+                height: plotterHeight,
+                parentHeightOffset: 0
+              },
+              legend: {
+                show: true,
+                showForSingleSeries: true
+              },
+              xaxis: {
+                tickAmount: 10
+              }
+            }}
+            series={series}
+          />
+        );
+      }
     };
     importChart();
-  }, [series]);
+  }, [series, plotterHeight]);
 
   return <div ref={ref}>{plotter}</div>;
 }
