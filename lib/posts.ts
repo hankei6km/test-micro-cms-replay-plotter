@@ -5,13 +5,44 @@ import { GetStaticPropsContext } from 'next';
 // getStaticProps 等のビルド時に実行される関数以外からは呼ばないように注意
 // (getStaticProps は デプロイされるときに bundle されないはずだが、明記されたところは見たいことないような。。。)
 
+function getFieldsQueryParams(fileds: string[]): string {
+  const q = new URLSearchParams('');
+  q.append('fields', fileds.join(','));
+  return q.toString();
+}
+// API で取得する fields の params.
+// 文字列の配列は型の拘束から外れるので、スキーマの型定義などをうまく利用する方法を検討。
+// ie. sortedPostsDataFields は  Home component(index.tsx) の props(allPostsData) に関連する
+//         -> これを API のスキーマとすり合わせて fields もうまいこと生成できないか
+const sortedPostsDataFields = getFieldsQueryParams([
+  'id',
+  'title',
+  'publishedAt'
+]);
+const allPostIdsFields = getFieldsQueryParams(['id']);
+const postDataFields = getFieldsQueryParams([
+  'id',
+  'content',
+  'title',
+  'publishedAt',
+  'createdAt',
+  'description',
+  'mainVisual',
+  'mainVisualShow',
+  'mainVisualText',
+  'series'
+]);
+
 // async にしても大丈夫? index.js では async から呼んでいるが、await はなかった
 export async function getSortedPostsData() {
   try {
-    const res = await fetch(`${process.env.BLOG_API_URL_BASE}`, {
-      method: 'GET',
-      headers: { 'X-API-KEY': process.env.BLOG_API_KEY }
-    });
+    const res = await fetch(
+      `${process.env.BLOG_API_URL_BASE}?${sortedPostsDataFields}`,
+      {
+        method: 'GET',
+        headers: { 'X-API-KEY': process.env.BLOG_API_KEY }
+      }
+    );
     if (res.ok) {
       return ((await res.json()) || []).contents.map(
         ({ id, title, publishedAt }) => {
@@ -35,10 +66,13 @@ export async function getSortedPostsData() {
 
 export async function getAllPostIds() {
   try {
-    const res = await fetch(`${process.env.BLOG_API_URL_BASE}`, {
-      method: 'GET',
-      headers: { 'X-API-KEY': process.env.BLOG_API_KEY }
-    });
+    const res = await fetch(
+      `${process.env.BLOG_API_URL_BASE}?${allPostIdsFields}`,
+      {
+        method: 'GET',
+        headers: { 'X-API-KEY': process.env.BLOG_API_KEY }
+      }
+    );
     if (res.ok) {
       return ((await res.json()) || []).contents.map(({ id }) => {
         return {
@@ -63,10 +97,10 @@ export async function getPostData({
   previewData = {}
 }: GetStaticPropsContext<ParsedUrlQuery>) {
   try {
-    let url = `${process.env.BLOG_API_URL_BASE}/${params.id}`;
+    let url = `${process.env.BLOG_API_URL_BASE}/${params.id}?${postDataFields}`;
     if (preview) {
       // console.log('----preview');
-      const q = new URLSearchParams('');
+      const q = new URLSearchParams(postDataFields);
       q.append('draftKey', previewData.draftKey);
       url = `${process.env.BLOG_API_URL_BASE}/${
         previewData.slug
