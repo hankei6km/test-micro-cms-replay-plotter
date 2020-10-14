@@ -1,4 +1,5 @@
 import { ReactElement, useState, useEffect, useCallback } from 'react';
+import ReactApexChart from 'react-apexcharts';
 import utilStyles from '../styles/utils.module.css';
 
 export type Series = {
@@ -11,6 +12,7 @@ export type Series = {
 // どちらを使う方が良いのか?
 export default function Plotter({ series }: { series: Series }) {
   //const [plotter, setPlotter] = useState<null | Element>(null);
+  const [chart, setChart] = useState<null | typeof ReactApexChart>(null);
   const [plotter, setPlotter] = useState<null | ReactElement<any>>(null);
   const [plotterHeight, setPlotterHeight] = useState(''); // 文字列で扱う
 
@@ -33,32 +35,44 @@ export default function Plotter({ series }: { series: Series }) {
 
   // https:stackoverflow.com/questions/55151041/window-is-not-defined-in-next-js-react-app
   useEffect(() => {
-    const importChart = async () => {
-      if (plotterHeight) {
-        const Chart = (await import('react-apexcharts')).default;
-        setPlotter(
-          <Chart
-            options={{
-              chart: {
-                type: 'line',
-                height: plotterHeight,
-                parentHeightOffset: 0
-              },
-              legend: {
-                show: true,
-                showForSingleSeries: true
-              },
-              xaxis: {
-                tickAmount: 10
-              }
-            }}
-            series={series}
-          />
-        );
-      }
-    };
-    importChart();
-  }, [series, plotterHeight]);
+    // useEffect も依存によっては 毎回 import を実行しそうなのでわけた.
+    // が、現状ではあまり意味はないか?
+    if (chart === null) {
+      // console.log('!!!! import');
+      const importChart = async () => {
+        const c = (await import('react-apexcharts')).default;
+        setChart((prev) => c);
+      };
+      importChart();
+    }
+  }, [chart]);
+
+  useEffect(() => {
+    if (chart !== null && plotterHeight !== '') {
+      // console.log('!!!! effect');
+      // const Chart = (await import('react-apexcharts')).default;
+      const Chart = chart;
+      setPlotter(
+        <Chart
+          options={{
+            chart: {
+              type: 'line',
+              height: plotterHeight,
+              parentHeightOffset: 0
+            },
+            legend: {
+              show: true,
+              showForSingleSeries: true
+            },
+            xaxis: {
+              tickAmount: 10
+            }
+          }}
+          series={series}
+        />
+      );
+    }
+  }, [series, chart, plotterHeight]);
 
   return <div ref={ref}>{plotter}</div>;
 }
