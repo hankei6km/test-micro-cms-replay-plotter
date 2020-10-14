@@ -21,7 +21,7 @@ export default function Plotter({ series }: { series: Series }) {
         // TODO: plotter の高さに auto を使わないことも検討.
         const h = node.getBoundingClientRect().width * 0.62109;
         setPlotter(
-          <div style={{ height: h }} className={styleMedia.plotterRect} />
+          <div style={{ height: h }} className={utilStyles.plotterRect} />
         );
       }
     },
