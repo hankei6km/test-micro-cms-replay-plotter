@@ -11,10 +11,9 @@ export type Series = {
 // 記述的にはあまり変わらない.
 // どちらを使う方が良いのか?
 export default function Plotter({ series }: { series: Series }) {
-  //const [plotter, setPlotter] = useState<null | Element>(null);
   const [chart, setChart] = useState<null | typeof ReactApexChart>(null);
   const [plotter, setPlotter] = useState<null | ReactElement<any>>(null);
-  const [plotterHeight, setPlotterHeight] = useState(''); // 文字列で扱う
+  const [plotterHeight, setPlotterHeight] = useState(''); // 文字列で扱う、mount時の値が設定される、変更は ApexChart 側が内部で処理している
 
   const ref = useCallback(
     (node) => {
