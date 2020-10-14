@@ -1,4 +1,5 @@
-import { ReactElement, useState, useEffect } from 'react';
+import { ReactElement, useState, useEffect, useCallback } from 'react';
+import utilStyles from '../styles/utils.module.css';
 
 export type Series = {
   name: string;
@@ -11,7 +12,23 @@ export type Series = {
 export default function Plotter({ series }: { series: Series }) {
   //const [plotter, setPlotter] = useState<null | Element>(null);
   const [plotter, setPlotter] = useState<null | ReactElement<any>>(null);
-  // https://stackoverflow.com/questions/55151041/window-is-not-defined-in-next-js-react-app
+
+  const ref = useCallback(
+    (node) => {
+      if (node != null && plotter === null) {
+        // https://apexcharts.com/docs/options/chart/height/
+        // 微妙にずれる、計算方法間違えてしまったか?
+        // TODO: plotter の高さに auto を使わないことも検討.
+        const h = node.getBoundingClientRect().width * 0.62109;
+        setPlotter(
+          <div style={{ height: h }} className={styleMedia.plotterRect} />
+        );
+      }
+    },
+    [plotter]
+  );
+
+  // https:stackoverflow.com/questions/55151041/window-is-not-defined-in-next-js-react-app
   useEffect(() => {
     const importChart = async () => {
       const Chart = (await import('react-apexcharts')).default;
@@ -35,7 +52,8 @@ export default function Plotter({ series }: { series: Series }) {
     };
     importChart();
   }, [series]);
-  return <div>{plotter}</div>;
+
+  return <div ref={ref}>{plotter}</div>;
 }
 
 // https://nextjs.org/docs/advanced-features/dynamic-import
