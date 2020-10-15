@@ -100,11 +100,11 @@ export async function getPostData({
     let url = `${process.env.BLOG_API_URL_BASE}/${params.id}?${postDataFields}`;
     if (preview) {
       // console.log('----preview');
-      const q = new URLSearchParams(postDataFields);
-      q.append('draftKey', previewData.draftKey);
+      const previewDataFields = new URLSearchParams(postDataFields);
+      previewDataFields.append('draftKey', previewData.draftKey);
       url = `${process.env.BLOG_API_URL_BASE}/${
         previewData.slug
-      }?${q.toString()}`;
+      }?${previewDataFields.toString()}`;
     }
     const res = await fetch(url, {
       method: 'GET',
