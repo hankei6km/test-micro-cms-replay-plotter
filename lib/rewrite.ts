@@ -34,4 +34,5 @@ export function rewriteImage(body: string, imageTempl: string): string {
     });
     return $.html();
   }
+  return body;
 }
