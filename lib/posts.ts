@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
+import { rewriteImage } from './rewrite';
 
 // getStaticProps 等のビルド時に実行される関数以外からは呼ばないように注意
 // (getStaticProps は デプロイされるときに bundle されないはずだが、明記されたところは見たいことないような。。。)
@@ -30,7 +31,9 @@ const postDataFields = getFieldsQueryParams([
   'mainVisual',
   'mainVisualShow',
   'mainVisualText',
-  'series'
+  'series',
+  'cardTemplate',
+  'imageTemplate'
 ]);
 
 // async にしても大丈夫? index.js では async から呼んでいるが、await はなかった
@@ -114,9 +117,10 @@ export async function getPostData({
     // Combine the data with the id and contentHtml
     if (res.ok) {
       const data = (await res.json()) || { series: [] };
+      const contentHtml = rewriteImage(data.content, data.imageTemplate);
       return {
         id: data.id,
-        contentHtml: data.content,
+        contentHtml: contentHtml,
         //...matterResult.data
         title: data.title,
         date:

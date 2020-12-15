@@ -10,7 +10,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.23",
     "apexcharts": "3.22.0",
+    "cheerio": "^1.0.0-rc.3",
     "date-fns": "^2.11.1",
     "gray-matter": "^4.0.2",
     "next": "9.5.3",

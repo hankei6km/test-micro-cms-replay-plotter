@@ -26,6 +26,8 @@ export default function Post({
     mainVisualShow: boolean;
     mainVisualText: string;
     series: Series;
+    cardTemplate: string;
+    imageTemplate: string;
   };
   preview: boolean;
 }) {
