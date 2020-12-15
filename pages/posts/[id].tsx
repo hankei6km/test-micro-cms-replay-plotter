@@ -27,7 +27,10 @@ export default function Post({
     mainVisualText: string;
     series: Series;
     cardTemplate: string;
-    imageTemplate: string;
+    imageTemplate: {
+      id: string;
+      template: string;
+    }[];
   };
   preview: boolean;
 }) {

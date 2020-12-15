@@ -119,7 +119,7 @@ export async function getPostData({
       const data = (await res.json()) || { series: [] };
       const contentHtml = rewrite(data.content)
         .use(rewriteCode())
-        .use(rewriteImage(data.imageTemplate))
+        .use(rewriteImage(data.imageTemplate || []))
         .run();
       return {
         id: data.id,
