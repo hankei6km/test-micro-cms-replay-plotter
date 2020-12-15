@@ -1,4 +1,5 @@
 import cheerio from 'cheerio';
+import hljs from 'highlight.js';
 // https://microcms.io/blog/syntax-highlighting-on-server-side
 
 export function rewriteImage(body: string, imageTempl: string): string {
@@ -35,4 +36,14 @@ export function rewriteImage(body: string, imageTempl: string): string {
     return $.html();
   }
   return body;
+}
+
+export function rewriteCode(body: string): string {
+  const $ = cheerio.load(body);
+  $('pre code').each((_idx, elm) => {
+    const result = hljs.highlightAuto($(elm).text());
+    $(elm).html(result.value);
+    $(elm).addClass('hljs');
+  });
+  return $.html();
 }

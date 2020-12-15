@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
-import { rewriteImage } from './rewrite';
+import { rewriteImage, rewriteCode } from './rewrite';
 
 // getStaticProps 等のビルド時に実行される関数以外からは呼ばないように注意
 // (getStaticProps は デプロイされるときに bundle されないはずだが、明記されたところは見たいことないような。。。)
@@ -117,7 +117,10 @@ export async function getPostData({
     // Combine the data with the id and contentHtml
     if (res.ok) {
       const data = (await res.json()) || { series: [] };
-      const contentHtml = rewriteImage(data.content, data.imageTemplate);
+      const contentHtml = rewriteImage(
+        rewriteCode(data.content),
+        data.imageTemplate
+      );
       return {
         id: data.id,
         contentHtml: contentHtml,
