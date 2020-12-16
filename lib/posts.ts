@@ -137,7 +137,8 @@ export async function getPostData({
             name: e.name,
             data: JSON.parse(e.data)
           };
-        })
+        }),
+        cardTemplate: data.cardTemplate || ''
       };
     } else {
       console.error(`getPostData error: ${res.statusText}`);
