@@ -26,6 +26,14 @@ export default function Post({
     mainVisualShow: boolean;
     mainVisualText: string;
     series: Series;
+    cardTemplate: {
+      id: string;
+      template: string;
+    };
+    imageTemplate: {
+      id: string;
+      template: string;
+    }[];
   };
   preview: boolean;
 }) {
@@ -47,6 +55,7 @@ export default function Post({
           description={postData.description}
           image={postData.mainVisual ? postData.mainVisual.url : undefined}
           imageText={postData.mainVisualText}
+          cardTemplate={postData.cardTemplate.template}
         />
       }
     >

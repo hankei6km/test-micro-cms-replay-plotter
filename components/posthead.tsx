@@ -45,22 +45,32 @@ export function ImageUrl(image: string, imageText: string): string {
   return `${image}?${q.toString()}`;
 }
 
+function TwitterImageUrl(image: string, cardTemplate: string): string {
+  if (image) {
+    const p = cardTemplate ? cardTemplate.split('?', 2)[1] : '';
+    return p ? `${image}?${p}` : '';
+  }
+}
+
 type Props = {
   title?: string;
   description?: string;
   image?: string;
   imageText?: string;
+  cardTemplate?: string;
 };
 
 export default function PostHead({
   title = config.title,
   description,
   image,
-  imageText = ''
+  imageText = '',
+  cardTemplate = ''
 }: Props) {
   const imageUrl = image
     ? ImageUrl(image, imageText)
     : ImageUrl(config.logo, '');
+  const twitterImageUrl = TwitterImageUrl(image, cardTemplate);
   return (
     <Head>
       <link rel="icon" href="/favicon.ico" />
@@ -72,6 +82,9 @@ export default function PostHead({
       <meta property="og:image" content={imageUrl} />
       <meta name="og:title" content={title} />
       <meta name="twitter:card" content="summary_large_image" />
+      {twitterImageUrl !== '' && (
+        <meta property="twitter:image" content={twitterImageUrl} />
+      )}
     </Head>
   );
 }
